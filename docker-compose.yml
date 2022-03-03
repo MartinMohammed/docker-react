@@ -1,0 +1,35 @@
+version: '3'
+# ------------- different services = different containers 
+services:
+  # responsible for hosting our development server
+  react-app: 
+    build: 
+      # specify where we want all the files and folders for this image
+      # to be pulled from > we want from the current working directory 
+      context: .
+      # location of the dockerfile that is going to be used to construct the image
+      # for this web service
+      dockerfile: Dockerfile.dev
+    ports: 
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      # map the current work dir to inside the app folder inside the container
+      - .:/app
+  # responsible for running our tests and rerunnign any time hthat any file inside of our volumes change. 
+  tests:
+      build: 
+        # specify where we want all the files and folders for this image
+        # to be pulled from > we want from the current working directory 
+        context: .
+        # location of the dockerfile that is going to be used to construct the image
+        # for this web service
+        dockerfile: Dockerfile.dev
+      volumes:
+        - /app/node_modules
+        # map the current work dir to inside the app folder inside the container
+        - .:/app
+    # override a command inside of a docker file to make sure npm run test than default npm run start
+      command: ["npm", "run", "test"]
+
+

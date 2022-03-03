@@ -1,0 +1,13 @@
+FROM node:16-alpine 
+
+WORKDIR "/app" 
+COPY package.json ./
+# by npm install we create new node_modules directory 
+# which containes all dependencies for the react application 
+RUN npm install 
+
+# when we duplicate our local_dir then we will have a duplicate of node_modules ≠ good 
+# solution remove the node_modules in the local directory 
+COPY . . 
+
+CMD ["npm", "run", "start"]
