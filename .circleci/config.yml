@@ -1,0 +1,19 @@
+language: generic
+# when using docker super user permissions are required
+sudo: required
+services:
+  # tell ciclcleci that we need docker cli - copy
+  - docker
+
+# series of steps / setup that needs to occur before we start to either
+# deploy our poje ct or before we start to run our test run.
+before_install:
+  # build the image with docker command and the particular dockerfile
+  - docker build -t southpoletux/docker-react -f Dockerfile.dev .
+
+# contain all the different commands -> to be ran when our test need to acutally be executed
+# travic ci also watching th eoutput of each these commands -> from each it gets returned an startus code ≠ 0
+# either test / build faliled
+script:
+  - docker run -e CI=true USERNAME/docker-react npm run test
+  # text suite should automatically get exited when run is completed
